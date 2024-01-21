@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plant_app/ui/root_page.dart';
 
 import '../constants.dart';
 import 'login.dart';
@@ -26,7 +27,7 @@ class _OnBoardingState extends State<OnBoarding> {
             padding: const EdgeInsets.only(right: 20, top: 20),
             child: InkWell(
               onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Login()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RootPage()));
               },
               child: const Text(
                 'Skip',
