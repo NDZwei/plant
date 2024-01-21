@@ -13,6 +13,10 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  bool toggleIsFavorite(bool isFavorite) {
+    return !isFavorite;
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -48,18 +52,27 @@ class _DetailPageState extends State<DetailPage> {
                       debugPrint('favorite');
                     },
                     child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          color: Constants.primaryColor.withOpacity(0.15)),
-                      child: Icon(
-                        _plantList[widget.plantId].isFavorite == true
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        color: Constants.primaryColor,
-                      ),
-                    ),
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            color: Constants.primaryColor.withOpacity(0.15)),
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              bool isFavorite = toggleIsFavorite(
+                                  _plantList[widget.plantId].isFavorite);
+                              _plantList[widget.plantId].isFavorite =
+                                  isFavorite;
+                            });
+                          },
+                          icon: Icon(
+                            _plantList[widget.plantId].isFavorite == true
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: Constants.primaryColor,
+                          ),
+                        )),
                   ),
                 ],
               )),
@@ -199,44 +212,47 @@ class _DetailPageState extends State<DetailPage> {
             Container(
               height: 50,
               width: 50,
-              child: Icon(Icons.shopping_cart, color: Colors.white,),
-              decoration: BoxDecoration(
-                color: Constants.primaryColor.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(50),
-                boxShadow: [
-                  BoxShadow(
-                      offset: const Offset(0, 1),
-                      blurRadius: 5,
-                      color: Constants.primaryColor.withOpacity(0.3) 
-                  )
-                ]
+              child: Icon(
+                Icons.shopping_cart,
+                color: Colors.white,
               ),
+              decoration: BoxDecoration(
+                  color: Constants.primaryColor.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(50),
+                  boxShadow: [
+                    BoxShadow(
+                        offset: const Offset(0, 1),
+                        blurRadius: 5,
+                        color: Constants.primaryColor.withOpacity(0.3))
+                  ]),
             ),
             const SizedBox(
               width: 20,
             ),
-            Expanded(child: Container(
+            Expanded(
+                child: Container(
               decoration: BoxDecoration(
-                color: Constants.primaryColor,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    offset: const Offset(0, 1),
-                    blurRadius: 5,
-                    color: Constants.primaryColor.withOpacity(0.3)
-                  )
-                ]
-              ),
+                  color: Constants.primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                        offset: const Offset(0, 1),
+                        blurRadius: 5,
+                        color: Constants.primaryColor.withOpacity(0.3))
+                  ]),
               child: const Center(
-                child: Text('Buy now', style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),),
+                child: Text(
+                  'Buy now',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
               ),
             ))
           ],
         ),
-      ) ,
+      ),
     );
   }
 }
