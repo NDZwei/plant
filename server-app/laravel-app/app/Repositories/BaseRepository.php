@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 abstract class BaseRepository {
     protected $model;
@@ -28,7 +29,7 @@ abstract class BaseRepository {
         return $this->model->with($relation)->get($column);
     }
 
-    public function findByIds(array $ids, $columns = ['*'])
+    public function findByIds($columns = ['*'], array $ids)
     {
         return $this->model->whereIn('id', $ids)->get($columns);
     }
@@ -38,27 +39,18 @@ abstract class BaseRepository {
         return $this->model->where('id', $id)->first();
     }
 
-    public function saveModel(array $data) {
-        try {
-            if(isset($data['id'])) {
-                $modelById = $this->model->find($data['id']);
-                if ($modelById) {
-                    return $modelById->update($data);
-                }
-            } else {
-                return $this->model->create($data);
+    public function save(array $data) {
+        if(isset($data['id'])) {
+            $modelById = $this->model->find($data['id']);
+            if ($modelById) {
+                return $modelById->update($data);
             }
-        } catch (Exception $e) {
-            return $e->getMessage();
+        } else {
+            return $this->model->create($data);
         }
     }
 
-    public function destroy($id)
-    {
-        return $this->model->destroy($id);
-    }
-
-    public function deleteById($id)
+    public function delete($id)
     {
         $data = $this->model->find($id);
         if ($data) {
@@ -68,5 +60,23 @@ abstract class BaseRepository {
         else {
             return 0;
         }
+    }
+
+    public function paginate(array $data) {
+        $pageIndex = $data['page_index'] ?? 1;
+        $pageSize = $data['page_size'] ?? 10;
+        $model = $this->model;
+
+        if (isset($data['conditions']) && !empty($data['conditions'])) {
+            $conditions = $data['conditions'];
+            $model = $model->where(function ($query) use ($conditions) {
+                foreach ($conditions as $item) {
+                    $query->orWhere($item[0], $item[1], $item[2]);
+                }
+            });
+        }
+
+        $queryData = $model->paginate($pageSize, ['*'], 'page', $pageIndex);
+        return $queryData;
     }
 }
