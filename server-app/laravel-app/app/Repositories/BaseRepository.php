@@ -2,9 +2,6 @@
 
 namespace App\Repositories;
 
-use Exception;
-use Illuminate\Support\Facades\DB;
-
 abstract class BaseRepository {
     protected $model;
 
@@ -29,9 +26,14 @@ abstract class BaseRepository {
         return $this->model->with($relation)->get($column);
     }
 
-    public function findByIds($columns = ['*'], array $ids)
+    public function getByIds($columns = ['*'], array $ids)
     {
         return $this->model->whereIn('id', $ids)->get($columns);
+    }
+
+    public function getByColumnIds($columns = ['*'], string $fieldId, array $ids)
+    {
+        return $this->model->whereIn($fieldId, $ids)->get($columns);
     }
 
     public function getById($id)

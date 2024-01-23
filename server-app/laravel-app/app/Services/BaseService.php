@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Exception;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 abstract class BaseService {
@@ -21,15 +22,32 @@ abstract class BaseService {
 
     public function getResponse200($data){
         return [
-            'status' => 200,
+            'status' => Response::HTTP_OK,
             'message' => 'Success',
             'data' => $data
         ];
     }
 
+    public function getResponse400(){
+        return [
+            'status' => Response::HTTP_BAD_REQUEST,
+            'message' => 'Bad request',
+            'data' => null
+        ];
+    }
+
+
+    public function getResponse404(){
+        return [
+            'status' => Response::HTTP_NOT_FOUND,
+            'message' => 'Success',
+            'data' => null
+        ];
+    }
+
     public function getResponse500($error){
         return [
-            'status' => 500,
+            'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
             'message' => $error,
             'data' => null
         ];
@@ -40,15 +58,34 @@ abstract class BaseService {
         return $this->getResponse200($data);
     }
 
-    public function getData($column = '*', $relation = [])
+    public function getData(array $request)
     {
+        $column = $request['column'] ?? '*';
+        $relation = $request['relation'] ?? [];
         $data = $this->repository->getData($column, $relation);
         return $this->getResponse200($data);
     }
 
-    public function findByIds($column = '*', array $ids)
+    public function getByIds(array $request)
     {
-        $data = $this->repository->findByIds($column, $ids);
+        if(isset($request['ids']) && !empty($request['ids'])) {
+            $column = $request['column'] ?? '*';
+            $data = $this->repository->getByIds($column, $request['ids']);
+            return $this->getResponse200($data);
+        }
+        return $this->getResponse500('Ids can not be empty');
+    }
+
+    public function getByColumnIds(array $request)
+    {
+        $column = $request['column'] ?? '*';
+        if(!isset($request['ids']) || empty($request['ids'])) {
+            return $this->getResponse500('Ids can not be empty');
+        }
+        if(!isset($request['fieldId'])) {
+            return $this->getResponse500('fieldId can not be null');
+        }
+        $data = $this->repository->getByColumnIds($column, $request['fieldId'], $request['ids']);
         return $this->getResponse200($data);
     }
 
