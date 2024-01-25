@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:plant_app/ui/root_page.dart';
 
 import '../constants.dart';
-import 'login_page.dart';
+import 'screens/auth/login_page.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});
@@ -27,7 +27,7 @@ class _OnBoardingState extends State<OnBoarding> {
             padding: const EdgeInsets.only(right: 20, top: 20),
             child: InkWell(
               onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RootPage()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Login()));
               },
               child: const Text(
                 'Skip',
@@ -88,7 +88,7 @@ class _OnBoardingState extends State<OnBoarding> {
                       }
                     } else {
                       Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (_) => const Login()));
+                          MaterialPageRoute(builder: (_) => Login()));
                     }
                   });
                 },
