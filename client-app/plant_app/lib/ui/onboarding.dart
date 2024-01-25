@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:plant_app/ui/root_page.dart';
 
 import '../constants.dart';
-import 'login.dart';
+import 'login_page.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({super.key});
@@ -87,7 +87,8 @@ class _OnBoardingState extends State<OnBoarding> {
                             curve: Curves.easeIn);
                       }
                     } else {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Login()));
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (_) => const Login()));
                     }
                   });
                 },

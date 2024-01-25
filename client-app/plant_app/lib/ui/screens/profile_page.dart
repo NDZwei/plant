@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:plant_app/ui/login_page.dart';
+import 'package:plant_app/ui/screens/profile/location.dart';
+import 'package:plant_app/ui/screens/profile/my_profile.dart';
+import 'package:plant_app/ui/screens/profile/order_history.dart';
+import 'package:plant_app/ui/screens/profile/wallet.dart';
 import 'package:plant_app/ui/screens/widgets/profile_widget.dart';
 
 import '../../constants.dart';
@@ -65,31 +70,56 @@ class ProfilePage extends StatelessWidget {
               Expanded(
                 child: ListView(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: const [
+                  children: [
                     ProfileWidget(
                       icon: Icons.person,
                       title: 'My Profile',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyProfile()),
+                        );
+                      },
                     ),
                     ProfileWidget(
-                      icon: Icons.settings,
-                      title: 'Settings',
+                      icon: Icons.account_balance_wallet,
+                      title: 'Wallet balance',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Wallet()),
+                        );
+                      },
                     ),
                     ProfileWidget(
-                      icon: Icons.notifications,
-                      title: 'Notifications',
+                      icon: Icons.shopping_cart,
+                      title: 'Order',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => OrderHistory()),
+                        );
+                      },
                     ),
                     ProfileWidget(
-                      icon: Icons.chat,
-                      title: 'FAQs',
-                    ),
-                    ProfileWidget(
-                      icon: Icons.share,
-                      title: 'Share',
+                      icon: Icons.location_pin,
+                      title: 'Location',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Location()),
+                        );
+                      },
                     ),
                     ProfileWidget(
                       icon: Icons.logout,
                       title: 'Log Out',
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => Login()),
+                        );
+                      },
                     ),
                   ],
                 ),
