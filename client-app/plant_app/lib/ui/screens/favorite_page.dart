@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plant_app/constants.dart';
-import 'package:plant_app/ui/screens/widgets/PlantWiget.dart';
+import 'package:plant_app/ui/screens/widgets/plant_widget.dart';
 
 import '../../models/plant.dart';
 
