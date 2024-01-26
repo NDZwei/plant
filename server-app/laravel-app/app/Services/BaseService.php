@@ -11,8 +11,16 @@ abstract class BaseService {
 
     abstract function getRepository();
 
+    protected function hasRepository()
+    {
+        return class_exists($this->getRepository());
+    }
+
     public function setRepository() {
-        return app()->make($this->getRepository());
+        if ($this->hasRepository()) {
+            return app()->make($this->getRepository());
+        }
+        return null;
     }
 
     public function __construct()
@@ -28,27 +36,42 @@ abstract class BaseService {
         ];
     }
 
-    public function getResponse400(){
+    public function getResponse400($message ="Bad request"){
         return [
             'status' => Response::HTTP_BAD_REQUEST,
-            'message' => 'Bad request',
+            'message' => $message,
             'data' => null
         ];
     }
 
+    public function getResponse401(){
+        return [
+            'status' => Response::HTTP_UNAUTHORIZED,
+            'message' => 'Unauthorized',
+            'data' => null
+        ];
+    }
 
-    public function getResponse404(){
+    public function getResponse403($message ="Forbidden"){
+        return [
+            'status' => Response::HTTP_FORBIDDEN,
+            'message' => $message,
+            'data' => null
+        ];
+    }
+
+    public function getResponse404($message = 'Not found'){
         return [
             'status' => Response::HTTP_NOT_FOUND,
-            'message' => 'Success',
+            'message' => $message,
             'data' => null
         ];
     }
 
-    public function getResponse500($error){
+    public function getResponse500($message = 'Internal server error'){
         return [
             'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
-            'message' => $error,
+            'message' => $message,
             'data' => null
         ];
     }
