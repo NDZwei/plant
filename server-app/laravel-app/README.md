@@ -3,7 +3,6 @@ Navigate in your terminal to laravel-server by run `cd laravel-app`, then run th
 - `composer update`
 - `composer install`
 - `php artisan migrate`
-- `php artisan passport:install`
 - `php artisan passport:client --personal`
 - `php artisan db:seed`
 - `php artisan storage:link`

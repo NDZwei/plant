@@ -27,8 +27,9 @@ class UserVerifyNotification extends VerifyEmail implements ShouldQueue
     {
         $actionUrl = $this->verificationUrl($notifiable);
         $actionText = 'Click here to confirm your account';
-        return (new MailMessage)->subject('[Plant-app] Email confirm for sign-up verification')->view(
-            'emails.user-verify',
+        return (new MailMessage)
+            ->subject('[Plant-app] Email confirm for sign-up verification')
+            ->view('emails.user-verify',
             [
                 'user' => $this->user,
                 'actionText' => $actionText,

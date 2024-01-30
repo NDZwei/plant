@@ -46,6 +46,16 @@ class AuthService extends BaseService {
             $role = $this->roleRepository->getByName('ROLE_CUSTOMER');
             $user->roles()->attach($role->id, ['created_at' => now(), 'updated_at' => now()]);
             DB::commit();
+            // send mail
+            Auth::login($user);
+            $success['token'] = $user->createToken('token')->accessToken;
+            $success['message'] = "Registration successfull..";
+            try {
+                $user->sendMailVerification();
+            } catch (Exception $e) {
+                DB::rollBack();
+                return ['data' => null, 'message' => "Can't send email verification", 'code' => 500];
+            }
             return $this->getResponse200($user);
         }
         catch(Exception $e) {
