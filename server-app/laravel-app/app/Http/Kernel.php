@@ -2,8 +2,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\ConvertField;
-use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -45,7 +43,7 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            ConvertField::class,
+            \App\Http\Middleware\ConvertField::class,
         ],
     ];
 
@@ -66,7 +64,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'roles' => RoleMiddleware::class
+        'roles' => \App\Http\Middleware\RoleMiddleware::class
     ];
     /*
         auth: check user logged, if not logged redirect to login

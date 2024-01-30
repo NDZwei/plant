@@ -17,8 +17,8 @@ class AuthController extends BaseController
 
     public function __construct() {
         parent::__construct();
-        $this->middleware('signed')->only('verify');
-        $this->middleware('throttle:5,1')->only('register', 'resend');
+        $this->middleware('auth:api')->only('resend');
+        $this->middleware('throttle:5,1')->only('verify', 'resend');
     }
 
     public function login(Request $request)
@@ -62,28 +62,5 @@ class AuthController extends BaseController
         }
 
         return back()->with('resent', true);
-    }
-
-    public function verify(Request $request)
-    {
-        auth()->loginUsingId($request->route('id'));
-
-        if ($request->route('id') != $request->user()->getKey()) {
-            throw new AuthorizationException();
-        }
-
-        $user = $request->user();
-        $message = "";
-        if ($user->hasVerifiedEmail()) {
-            $message = "Already confirmed";
-        } else if ($user->markEmailAsVerified()) {
-            event(new Verified($user));
-            $user->is_active = true;
-            $user->save();
-            $message = "Successfully confirmed";
-        }
-
-        return view('userAccess.confirm-email', ['message' => $message]);
-
     }
 }

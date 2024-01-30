@@ -28,6 +28,7 @@
         <span class="break-all">
             <strong>If you cannot click the link, please copy and paste the following URL into your web browser: </strong><br />
             <em>{{$actionUrl}}</em>
+        </span>
     </p>
 
 </body>
